@@ -1,0 +1,19 @@
+{
+    "name": "web-scraper",
+    "version": "1.0.0",
+    "main": "src/index.js",
+    "author": "hyr1d",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+      "start": "node src/index.js",
+      "dev": "nodemon src/index.js"
+    },
+    "dependencies": {
+      "axios": "^0.27.2",
+      "colors": "^1.4.0",
+      "nodemon": "^2.0.19",
+      "puppeteer": "^15.5.0"
+    }
+  }
+  
