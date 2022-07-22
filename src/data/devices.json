@@ -1,0 +1,11 @@
+[
+    {
+        "type": "laptops",
+        "brand": "apple",
+        "model": "macbook pro",
+        "processor": "M1",
+        "ram": "8gb",
+        "ssd": "512gb",
+        "os": "macOS"
+    }
+]
