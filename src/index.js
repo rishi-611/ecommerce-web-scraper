@@ -4,6 +4,16 @@ import colors from "colors";
 
 // const device = devices[0];
 
+const device = {
+  type: "laptops",
+  brand: "apple",
+  model: "macbook pro",
+  processor: "m1",
+  ram: "8gb",
+  ssd: "512gb",
+  os: "macOS",
+};
+
 const start = async () => {
   const browser = await Puppeteer.launch({
     headless: false, //set true when not testing
@@ -12,28 +22,52 @@ const start = async () => {
     const page = await browser.newPage();
     await page.goto("https://www.croma.com/");
 
-    const laptopsListing = await page.$$eval(
-      ".swiper-slide .slide-img-wrap a",
-      (categories) => {
-        console.log(categories);
-        const final = categories.filter((category) => {
+    const searchText =
+      device.type +
+      " " +
+      device.brand +
+      " " +
+      device.model +
+      " " +
+      device.processor;
+    await page.type("#search", searchText);
+    await Promise.all([
+      page.keyboard.press("Enter"),
+      page.waitForNetworkIdle(),
+    ]);
+
+    const laptops = await page.$$eval(
+      ".product-title > a",
+      (laptops, device) => {
+        laptops = laptops.filter((laptop) => {
+          const text = laptop.textContent.toLowerCase();
+          console.log(text);
+          console.log(
+            device.brand,
+            device.model,
+            device.processor,
+            text.includes(device.brand) &&
+              text.includes(device.model) &&
+              text.includes(device.processor) &&
+              text.includes(device.ram + " ram") &&
+              text.includes(device.ssd + " ssd")
+          );
+
           return (
-            category.querySelector("span > img")?.alt?.toLowerCase() ===
-            "laptops"
+            text.includes(device.brand) &&
+            text.includes(device.model) &&
+            text.includes(device.processor) &&
+            text.includes(device.ram + " ram") &&
+            text.includes(device.ssd + " ssd")
           );
         });
 
-        if (!final?.length)
-          throw new Error({
-            message: "type: laptops not found on home page",
-          });
-        return final[0].href;
-      }
+        return laptops.map((laptop) => laptop.textContent.toLowerCase());
+      },
+      device
     );
 
-    page.goto(laptopsListing, {
-      waitUntil: "networkidle2",
-    });
+    console.log(laptops);
 
     // await browser.close();
   } catch (error) {
