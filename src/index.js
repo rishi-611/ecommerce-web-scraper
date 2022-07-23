@@ -1,8 +1,6 @@
 import Puppeteer from "puppeteer";
 import colors from "colors";
-// import devices from "./data/devices.json" assert { type: "json" };
-
-// const device = devices[0];
+import currency from "currency.js";
 
 const device = {
   type: "laptops",
@@ -14,14 +12,16 @@ const device = {
   os: "macOS",
 };
 
-const start = async () => {
+const getPrice = async (device, websiteURL) => {
   const browser = await Puppeteer.launch({
     headless: false, //set true when not testing
   });
   try {
+    //open page and goto website
     const page = await browser.newPage();
-    await page.goto("https://www.croma.com/");
+    await page.goto(websiteURL);
 
+    //enter product keywords in searchbar, and goto listing page
     const searchText =
       device.type +
       " " +
@@ -36,49 +36,69 @@ const start = async () => {
       page.waitForNetworkIdle(),
     ]);
 
+    //filter products for which all device specs match, get their price and url
     const laptops = await page.$$eval(
-      ".product-title > a",
-      (laptops, device) => {
-        laptops = laptops.filter((laptop) => {
-          const text = laptop.textContent.toLowerCase();
-          console.log(text);
-          console.log(
-            device.brand,
-            device.model,
-            device.processor,
-            text.includes(device.brand) &&
-              text.includes(device.model) &&
-              text.includes(device.processor) &&
-              text.includes(device.ram + " ram") &&
-              text.includes(device.ssd + " ssd")
-          );
+      ".product-info",
+      (products, device) => {
+        products = products.filter((product) => {
+          const title = product
+            .querySelector(".product-title > a")
+            ?.textContent?.toLowerCase();
 
           return (
-            text.includes(device.brand) &&
-            text.includes(device.model) &&
-            text.includes(device.processor) &&
-            text.includes(device.ram + " ram") &&
-            text.includes(device.ssd + " ssd")
+            title.includes(device.brand) &&
+            title.includes(device.model) &&
+            title.includes(device.processor) &&
+            title.includes(device.ram + " ram") &&
+            title.includes(device.ssd + " ssd")
           );
         });
 
-        return laptops.map((laptop) => laptop.textContent.toLowerCase());
+        return products.map((product) => ({
+          price: product.querySelector(".amount")?.textContent,
+          productURL: product.querySelector(".product-title > a")?.href,
+        }));
       },
       device
     );
 
-    console.log(laptops);
+    //close the browser
+    await browser.close();
 
-    // await browser.close();
+    //return the laptop which has minimum price
+    if (!laptops.length) return null;
+
+    return laptops.reduce(
+      (res, laptop) => {
+        const price = currency(laptop.price);
+        const amount = price.value;
+
+        if (amount < res.minPrice) {
+          res = {
+            minPrice: amount,
+            currency: laptop.price[0],
+            productURL: laptop.productURL,
+          };
+        }
+
+        return res;
+      },
+      {
+        minPrice: Infinity,
+        currency: null,
+        productURL: null,
+      }
+    );
   } catch (error) {
     // await browser.close();
     throw new Error(error);
   }
 };
 
-start()
-  .then(() => {
+getPrice(device, "https://www.croma.com/")
+  .then((laptops) => {
     console.log("scrapped website successfully".green.bold);
+    console.log(laptops);
   })
   .catch((err) => {
     console.log(err.message.red);
