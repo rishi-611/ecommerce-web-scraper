@@ -1,16 +1,11 @@
 import Puppeteer from "puppeteer";
 import colors from "colors";
 import currency from "currency.js";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const device = {
-  type: "laptops",
-  brand: "apple",
-  model: "macbook pro",
-  processor: "m1",
-  ram: "8gb",
-  ssd: "512gb",
-  os: "macOS",
-};
+const websiteURL = "https://www.croma.com/";
 
 const getPrice = async (device, websiteURL) => {
   const browser = await Puppeteer.launch({
@@ -19,6 +14,11 @@ const getPrice = async (device, websiteURL) => {
   try {
     //open page and goto website
     const page = await browser.newPage();
+
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+    );
+
     await page.goto(websiteURL);
 
     //enter product keywords in searchbar, and goto listing page
@@ -71,6 +71,7 @@ const getPrice = async (device, websiteURL) => {
     return laptops.reduce(
       (res, laptop) => {
         const price = currency(laptop.price);
+
         const amount = price.value;
 
         if (amount < res.minPrice) {
@@ -90,16 +91,43 @@ const getPrice = async (device, websiteURL) => {
       }
     );
   } catch (error) {
-    // await browser.close();
+    await browser.close();
     throw new Error(error);
   }
 };
 
-getPrice(device, "https://www.croma.com/")
-  .then((laptops) => {
-    console.log("scrapped website successfully".green.bold);
-    console.log(laptops);
+const init = async () => {
+  const dir = path.dirname(fileURLToPath(import.meta.url));
+  const devicesFilePath = path.join(dir, "\\data", "\\devices.json");
+
+  //parse the devices json file
+  let devices = JSON.parse(await fs.readFile(devicesFilePath));
+
+  //scrape for prices for each device
+  devices = await Promise.all(
+    devices.map(async (device) => {
+      const priceData = await getPrice(device, websiteURL);
+      return {
+        ...device,
+        price: currency(priceData.minPrice, {
+          symbol: priceData.currency,
+        }).format(),
+        url: priceData.productURL,
+      };
+    })
+  );
+
+  //rewrite to devices file, and prettify the json file with indentations
+  await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));
+};
+
+init()
+  .then(() => {
+    console.log("web scrapping done".green.bold);
   })
   .catch((err) => {
-    console.log(err.message.red);
+    console.error(err);
+  })
+  .finally(() => {
+    process.exit();
   });
