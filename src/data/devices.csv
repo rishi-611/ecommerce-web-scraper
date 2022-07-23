@@ -1,23 +1,7 @@
-type,brand,model,processor,ram,ssd,os
-Laptops,Dell,Latitude 3510,Intel Core i5,8GB,256GB,
-Laptops,Apple,MacBook Air 13,M1,8GB,256GB,macOS
-Laptops,Apple,MacBook Air 13,M2,8GB, 256GB,macOS
-Laptops,Apple,MacBook Pro 13,M2,8GB, 256GB,macOS
-Laptops,Apple,MacBook Pro 14,M1,16GB,512GB ,macOS
-Laptops,Apple,MacBook Pro 16,M2,16GB, 512GB,macOS
-,,,,,,
-Laptops,HP,HP Zbook Firefly 14 G8,Intel Core i7,16GB,512GB,Windows
-Laptops,HP,HP Elitebook x360 1030 G8,Intel Core i5,16GB,512GB,Windows
-Laptops,HP,HP ENVY x360 13,AMD Ryzen,16GB,512GB,Windows
-Laptops,HP,HP ENVY x360 13,Intel Core i7,16GB,512GB,Windows
-,,,,,,
-Laptops,Lenovo,ThinkPad E14 G2,Intel Core i5,8GB,256GB,Windows
-Laptops,Lenovo,ThinkPad L13 G2,Intel Core i7,16GB, 512GB,Windows
-Laptops,Lenovo,Lenovo Legion 7 Gaming ,Intel Core i9,16GB, 512GB,Windows
-Laptops,Lenovo,ThinkPad X1 Carbon G9,Intel Core i7,16GB, 512GB,Windows
-,,,,,,
-Laptops,Samsung,Samsung Galaxy Book2 Pro 360 13,Intel Core i5,16GB, 512GB,Windows
-Laptops,Samsung,Samsung Galaxy Book2 Pro 360 13,Intel Core i7,16GB, 512GB,Windows
-,,,,,,
-Laptop,Micorsoft,Microsoft Surface Laptop Go,Intel® Core™ i5,8GB, 128GB,Windows
-Laptop,Micorsoft,Microsoft Surface Laptop 4   13,Intel® Core™ i7,16GB, 512GB,Windows
+"type","brand","model","processor","ram","ssd","os","price","url"
+"Laptops","Apple","MacBook Pro 14","M1","16GB","512GB","macOS","₹181,490.00","https://www.croma.com/apple-macbook-pro-14-m1-pro-chip-macos-monterey-laptop-16gb-ram-512gb-ssd-apple-m1-gpu-35-97-cm-space-grey-/p/245232"
+"Laptops","HP","HP ENVY x360 13","AMD Ryzen","16GB","512GB","Windows",,
+"Laptops","HP","HP ENVY x360 Convert 13","i7","16GB","512GB","Windows","₹96,490.00","https://www.croma.com/hp-envy-x360-convert-13-bd0521tu-11th-gen-core-i7-windows-11-home-2-in-1-laptop-intel-evo-16gb-ram-512gb-ssd-intel-iris-xe-graphics-ms-office-33-78cm-4u6p7pa-acj-pale-gold-aluminium-/p/244309"
+"Laptops","Lenovo","ThinkPad L13 G2","i7","16GB","512GB","Windows",,
+"Laptops","Samsung","Samsung Galaxy Book2 Pro 360 13","i7","16GB","512GB","Windows",,
+"Laptop","Micorsoft","Microsoft Surface Laptop 4 13","i7","16GB","512GB","Windows",,

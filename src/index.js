@@ -5,6 +5,7 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import csv from "csvtojson";
+import { Parser } from "json2csv";
 
 const websiteURL = "https://www.croma.com/";
 
@@ -24,6 +25,7 @@ const getPrice = async (device, websiteURL) => {
     );
 
     await page.goto(websiteURL);
+    await page.waitForNetworkIdle();
 
     //enter product keywords in searchbar, and goto listing page
     const searchText =
@@ -49,6 +51,8 @@ const getPrice = async (device, websiteURL) => {
           const title = product
             .querySelector(".product-title > a")
             ?.textContent?.toLowerCase();
+
+          if (!title) return null;
 
           return (
             title.includes(device.brand.toLowerCase()) &&
@@ -129,8 +133,13 @@ const init = async () => {
     };
   }
 
-  //rewrite to devices file, and prettify the json file with indentations
-  await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));
+  //convert json to csv
+
+  console.log(devices);
+  const parser = new Parser();
+  const csvFile = parser.parse(devices);
+
+  await fs.writeFile(devicesFilePath, csvFile);
 };
 
 init()
