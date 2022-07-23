@@ -4,6 +4,7 @@ import currency from "currency.js";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import csv from "csvtojson";
 
 const websiteURL = "https://www.croma.com/";
 
@@ -12,6 +13,9 @@ const getPrice = async (device, websiteURL) => {
     headless: false, //set true when not testing
   });
   try {
+    console.log(
+      `device: ${device.type} ${device.brand} ${device.model} ${device.processor}`
+    );
     //open page and goto website
     const page = await browser.newPage();
 
@@ -30,6 +34,7 @@ const getPrice = async (device, websiteURL) => {
       device.model +
       " " +
       device.processor;
+
     await page.type("#search", searchText);
     await Promise.all([
       page.keyboard.press("Enter"),
@@ -46,11 +51,12 @@ const getPrice = async (device, websiteURL) => {
             ?.textContent?.toLowerCase();
 
           return (
-            title.includes(device.brand) &&
-            title.includes(device.model) &&
-            title.includes(device.processor) &&
-            title.includes(device.ram + " ram") &&
-            title.includes(device.ssd + " ssd")
+            title.includes(device.brand.toLowerCase()) &&
+            title.includes(device.model.toLowerCase()) &&
+            title.includes(device.processor.toLowerCase()) &&
+            title.includes(device.ram.toLowerCase() + " ram") &&
+            title.includes(device.ssd.toLowerCase() + " ssd") &&
+            title.includes(device.os.toLowerCase())
           );
         });
 
@@ -98,24 +104,30 @@ const getPrice = async (device, websiteURL) => {
 
 const init = async () => {
   const dir = path.dirname(fileURLToPath(import.meta.url));
-  const devicesFilePath = path.join(dir, "\\data", "\\devices.json");
+  const devicesFilePath = path.join(dir, "\\data", "\\devices.csv");
 
   //parse the devices json file
-  let devices = JSON.parse(await fs.readFile(devicesFilePath));
+  let devices = await csv().fromFile(devicesFilePath);
 
-  //scrape for prices for each device
-  devices = await Promise.all(
-    devices.map(async (device) => {
-      const priceData = await getPrice(device, websiteURL);
-      return {
-        ...device,
-        price: currency(priceData.minPrice, {
-          symbol: priceData.currency,
-        }).format(),
-        url: priceData.productURL,
-      };
-    })
-  );
+  console.log("fetched previous devices list".blue);
+
+  for (let i = 0; i < devices.length; i++) {
+    const priceData = await getPrice(devices[i], websiteURL);
+    if (!priceData) {
+      console.log("no available products for this device".yellow);
+      devices[i].price = null;
+      devices[i].url = null;
+      continue;
+    }
+    console.log("price list updated for this device".blue);
+    devices[i] = {
+      ...devices[i],
+      price: currency(priceData.minPrice, {
+        symbol: priceData.currency,
+      }).format(),
+      url: priceData.productURL,
+    };
+  }
 
   //rewrite to devices file, and prettify the json file with indentations
   await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));

@@ -1,0 +1,26 @@
+,,,,,,
+Type,Brand,Model,Processor,Ram,SSD,OS
+Laptops,Dell,DELL Latitude 3510,Intel Core i5,8GB,256GB,
+Laptops,Dell,Dell Latitude 3420,Intel Core i5,8GB,256GB,Windows
+,,,,,,
+Laptops,Apple,MacBook Air 13'',M1 chip with 8-core CPU and 7-core GPU,8GB,256GB,macOS
+Laptops,Apple,MacBook Air 13'',M2 chip with 8-core CPU and 8-core GPU,8GB, 256GB,macOS
+Laptops,Apple,MacBook Pro 13'',M2 chip with 8-core CPU and 10-core GPU,8GB, 256GB,macOS
+Laptops,Apple,MacBook Pro 14'',M1 Pro chip with 8‑core CPU and 14‑core GPU,16GB,512GB ,macOS
+Laptops,Apple,MacBook Pro 16'',M1 Pro chip with 10‑core CPU and 16‑core GPU,16GB, 512GB,macOS
+,,,,,,
+Laptops,HP,HP Zbook Firefly 14 G8,Intel Core i7,16GB,512GB,Windows
+Laptops,HP,HP Elitebook x360 1030 G8,Intel Core i5,16GB,512GB,Windows
+Laptops,HP,HP ENVY x360 13'',AMD Ryzen,16GB,512GB,Windows
+Laptops,HP,HP ENVY x360 13'',Intel Core i7,16GB,512GB,Windows
+,,,,,,
+Laptops,Lenovo,ThinkPad E14 G2,Intel Core i5,8GB,256GB,Windows
+Laptops,Lenovo,ThinkPad L13 G2,Intel Core i7,16GB, 512GB,Windows
+Laptops,Lenovo,Lenovo Legion 7 Gaming ,Intel Core i9,16GB, 512GB,Windows
+Laptops,Lenovo,ThinkPad X1 Carbon G9,Intel Core i7,16GB, 512GB,Windows
+,,,,,,
+Laptops,Samsung,Samsung Galaxy Book2 Pro 360 13'',Intel Core i5,16GB, 512GB,Windows
+Laptops,Samsung,Samsung Galaxy Book2 Pro 360 13'',Intel Core i7,16GB, 512GB,Windows
+,,,,,,
+Laptop,Micorsoft,Microsoft Surface Laptop Go,Intel® Core™ i5,8GB, 128GB,Windows
+Laptop,Micorsoft,Microsoft Surface Laptop 4   13'',Intel® Core™ i7,16GB, 512GB,Windows
