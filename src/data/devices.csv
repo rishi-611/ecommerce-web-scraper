@@ -1,7 +1,3 @@
-"type","brand","model","processor","ram","ssd","os","price","url"
-"Laptops","Apple","MacBook Pro 14","M1","16GB","512GB","macOS","₹181,490.00","https://www.croma.com/apple-macbook-pro-14-m1-pro-chip-macos-monterey-laptop-16gb-ram-512gb-ssd-apple-m1-gpu-35-97-cm-space-grey-/p/245232"
-"Laptops","HP","HP ENVY x360 13","AMD Ryzen","16GB","512GB","Windows",,
-"Laptops","HP","HP ENVY x360 Convert 13","i7","16GB","512GB","Windows","₹96,490.00","https://www.croma.com/hp-envy-x360-convert-13-bd0521tu-11th-gen-core-i7-windows-11-home-2-in-1-laptop-intel-evo-16gb-ram-512gb-ssd-intel-iris-xe-graphics-ms-office-33-78cm-4u6p7pa-acj-pale-gold-aluminium-/p/244309"
-"Laptops","Lenovo","ThinkPad L13 G2","i7","16GB","512GB","Windows",,
-"Laptops","Samsung","Samsung Galaxy Book2 Pro 360 13","i7","16GB","512GB","Windows",,
-"Laptop","Micorsoft","Microsoft Surface Laptop 4 13","i7","16GB","512GB","Windows",,
+"type","brand","model","processor","ram","ssd","os","price","url","updatedAt"
+"Laptops","Apple","MacBook Pro 14","M1","16GB","512GB","macOS","₹181,490.00","https://www.croma.com/apple-macbook-pro-14-m1-pro-chip-macos-monterey-laptop-16gb-ram-512gb-ssd-apple-m1-gpu-35-97-cm-space-grey-/p/245232",
+"Laptops","HP","HP ENVY x360 13","AMD Ryzen","16GB","512GB","Windows","","",""

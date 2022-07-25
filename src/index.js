@@ -5,7 +5,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import csv from "csvtojson";
 import { Parser } from "json2csv";
+import { updateDevices } from "./utils/index.js";
 import { scrapeCroma } from "./websites/india/croma.js";
+import { scrapeJohnLewis } from "./websites/uk/johnlewis.js";
 
 const init = async () => {
   const dir = path.dirname(fileURLToPath(import.meta.url));
@@ -16,24 +18,15 @@ const init = async () => {
 
   console.log("fetched previous devices list".blue);
 
-  //scrape website for each device, and update device info
-  for (let i = 0; i < devices.length; i++) {
-    const priceData = await scrapeCroma(devices[i]);
-    if (!priceData) {
-      console.log("no available products for this device".yellow);
-      devices[i].price = null;
-      devices[i].url = null;
-      continue;
-    }
-    console.log("price list updated for this device".blue);
-    devices[i] = {
-      ...devices[i],
-      price: currency(priceData.minPrice, {
-        symbol: priceData.currency,
-      }).format(),
-      url: priceData.productURL,
-    };
-  }
+  //scrape croma website for each device, and update device info
+  let priceList = await scrapeCroma(devices);
+  updateDevices(devices, priceList);
+  console.log("updated devices.csv".green);
+
+  //scrape johnlewis
+  priceList = await scrapeJohnLewis(devices);
+  updateDevices(devices, priceList);
+  console.log("updated devices.csv".green);
 
   //convert json to csv, and overwrite existing file
   const parser = new Parser();
