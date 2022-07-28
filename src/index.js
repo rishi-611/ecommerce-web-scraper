@@ -8,6 +8,7 @@ import { Parser } from "json2csv";
 import { updateDevices } from "./utils/index.js";
 import { scrapeCroma } from "./websites/india/croma.js";
 import { scrapeJohnLewis } from "./websites/uk/johnlewis.js";
+import { scrapeCurrys } from "./websites/uk/currys.js";
 
 const init = async () => {
   const dir = path.dirname(fileURLToPath(import.meta.url));
@@ -19,14 +20,19 @@ const init = async () => {
   console.log("fetched previous devices list".blue);
 
   //scrape croma website for each device, and update device info
-  let priceList = await scrapeCroma(devices);
+  let priceList = await scrapeCurrys(devices);
   updateDevices(devices, priceList);
   console.log("updated devices.csv".green);
 
-  //scrape johnlewis
-  priceList = await scrapeJohnLewis(devices);
-  updateDevices(devices, priceList);
-  console.log("updated devices.csv".green);
+  // //scrape croma website for each device, and update device info
+  // let priceList = await scrapeCroma(devices);
+  // updateDevices(devices, priceList);
+  // console.log("updated devices.csv".green);
+
+  // //scrape johnlewis
+  // priceList = await scrapeJohnLewis(devices);
+  // updateDevices(devices, priceList);
+  // console.log("updated devices.csv".green);
 
   //convert json to csv, and overwrite existing file
   const parser = new Parser();
